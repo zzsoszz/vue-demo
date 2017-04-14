@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue.js</title>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lodash.min.js"></script>
+	<style>
+		
+	</style>
+	<script>
+	 window.addEventListener("load",function(){
+
+			var watchExampleVM = new Vue({
+				  el: '#watch-example',
+				  data: {
+				    width: '',
+				    height:''
+				  },
+				  created:function() {
+				  	$(window).on("resize",_.debounce(this.resize,500));
+				  	$(window).trigger("resize");
+				  },
+				  methods: {
+				     resize:function () {
+				     	console.log("aaaa");
+				        var vm = this;
+				        vm.width = $(window).width();
+				        vm.height=$(window).height();
+				     }
+				  }
+			});
+
+
+ 	});
+	</script>
+</head>
+<body>
+
+<div id="watch-example">
+  <p>width:{{ width }} </p>
+  <p>height:{{ height }} </p>
+</div>
+
+</body>
+</html>
