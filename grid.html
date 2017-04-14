@@ -7,27 +7,48 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/lodash.min.js"></script>
 	<style>
-		
+		.clearfix:before,
+		.clearfix:after{
+		  display: table;
+		  content: " ";
+		}
+		.clearfix:after {
+		  clear: both;
+		}
+		.grid{
+			display: block;
+			clear:both;
+		}
+		.grid .item{
+			float: left;
+		}
 	</style>
 	<script>
 	 window.addEventListener("load",function(){
+	 		
+
+
 
 			var watchExampleVM = new Vue({
 				  el: '#watch-example',
 				  data: {
 				    width: '',
-				    height:''
+				    height:'',
+				    pagesize:3,
+				    style:{
+				    	width:"0"
+				    }
 				  },
 				  created:function() {
 				  	$(window).on("resize",_.debounce(this.resize,500));
 				  	$(window).trigger("resize");
 				  },
 				  methods: {
-				     resize:function () {
-				     	console.log("aaaa");
+				     resize:function(){
 				        var vm = this;
-				        vm.width = $(window).width();
-				        vm.height=$(window).height();
+				        vm.width = $(".grid").width();
+				        vm.height=$(".grid").height();
+				        vm.style.width=Math.floor($(".grid").width()/vm.pagesize)+"px";
 				     }
 				  }
 			});
@@ -41,6 +62,13 @@
 <div id="watch-example">
   <p>width:{{ width }} </p>
   <p>height:{{ height }} </p>
+  <p>pagesize:{{ pagesize }} </p>
+  <p>style.width:{{ style.width }} </p>
+  <div class="grid clearfix">
+	  <span class="item" v-for="item in pagesize" v-bind:style="style">
+	  	item
+	  </span>
+  </div>
 </div>
 
 </body>
