@@ -25,73 +25,94 @@
 
 		.qpager{
 			display: block;
+			width: fit-content;
+			width: -moz-fit-content;
+			margin: auto;
 		}
 		.qpager .qitem{
 			float: left;
+			padding:0.6em 1.2em;
+			cursor: pointer;
+		}
+		.qpager .qitem.active,.qpager .qitem:hover{
+			background:#336699;
+		}
+		.qpager .qitem:hover{
+			background:#999999;
 		}
 	</style>
 	<script>
 	 window.addEventListener("load",function(){
-	 		
 
 	 		Vue.component('pager', {
-	 		  props:{
+	 		  props:[
 	 		  	"totalPage",
 				"currentPage",
 				"pageSize",
-	 		  },
-			  template: '<div class="qpager" >  <div class="qitem" v-for="item in pagedata" > {item}</div>    </div>',
-			  data: {
-				  pagedata:[]
+	 		  ],
+			  template: `<div class="qpager clearfix" > 
+			  				<div class="qitem"  v-on:click="onPageClick(1)" > 首页
+			  				</div>
+			  				<div class="qitem" v-bind:class="[item==currentPage?'active':'']" v-for="item in showpages" v-on:click="onPageClick(item)" > {{item}} 
+			  				</div>
+			  				<div class="qitem"  v-on:click="onPageClick(totalPage)" > 尾页
+			  				</div>
+			  			</div>`,
+			  data:function(){
+			  	return {
+				  showpages:[],
+				  pagerange:3,
+				  totalpage:this.totalPage,
+				  currentpage:this.currentPage
+			  	};
+			  },
+			  created:function(){
+			  	  if(this.totalPage>0)
+			  	  {
+					this.changePage(1);
+			  	  }
 			  },
 			  methods: {
-			     next:function(){
-			     	pagedata=
+			     onPageClick:function(item){
+			     	if(this.totalPage>0)
+			     	{
+			     		this.changePage(item);
+			     	}
+			     },
+			     changePage:function(currentPage){
+					var minpage=currentPage-this.pagerange;
+			     	var maxpage=currentPage+this.pagerange;
+			     	if(minpage<1){
+			     		minpage=1;
+			     	}
+			     	if(maxpage>this.totalpage)
+			     	{
+			     		maxpage=this.totalpage;
+			     	}
+			     	this.showpages=[];
+			     	var index=0;
+			     	for(var i=minpage;i<=maxpage;i++){
+			     		this.showpages.push(i);
+			     	}
+			     	this.currentpage=currentPage;
 			     }
 			  }
 			});
 
-	 		
 			var watchExampleVM = new Vue({
 				  el: '#watch-example',
-				  data: {
-				    width: '',
-				    height:'',
-				    pagesize:3,
-				    style:{
-				    	width:"0"
-				    }
-				  },
-				  created:function() {
-				  	$(window).on("resize",_.debounce(this.resize,500));
-				  	$(window).trigger("resize");
-				  },
-				  methods: {
-				     resize:function(){
-				        var vm = this;
-				        vm.width = $(".grid").width();
-				        vm.height=$(".grid").height();
-				        vm.style.width=Math.floor($(".grid").width()/vm.pagesize)+"px";
-				     }
+				  data:{
 				  }
 			});
-
 
  	});
 	</script>
 </head>
 <body>
 
+
 <div id="watch-example">
-  <p>width:{{ width }} </p>
-  <p>height:{{ height }} </p>
-  <p>pagesize:{{ pagesize }} </p>
-  <p>style.width:{{ style.width }} </p>
-  <div class="grid clearfix">
-	  <span class="item" v-for="item in pagesize" v-bind:style="style">
-	  	item
-	  </span>
-  </div>
+  <pager total-page="10" current-page="1" page-size="3"  ></pager>
 </div>
 
 </body>
