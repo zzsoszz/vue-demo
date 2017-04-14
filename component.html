@@ -53,7 +53,7 @@
 			  template: `<div class="qpager clearfix" > 
 			  				<div class="qitem"  v-on:click="onPageClick(1)" > 首页
 			  				</div>
-			  				<div class="qitem" v-bind:class="[item==currentPage?'active':'']" v-for="item in showpages" v-on:click="onPageClick(item)" > {{item}} 
+			  				<div class="qitem" v-bind:class="[item==currentpage?'active':'']" v-for="item in showpages" v-on:click="onPageClick(item)" > {{item}} 
 			  				</div>
 			  				<div class="qitem"  v-on:click="onPageClick(totalPage)" > 尾页
 			  				</div>
