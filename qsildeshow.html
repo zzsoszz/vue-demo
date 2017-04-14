@@ -100,13 +100,38 @@
 			});
 
 
+
+			Vue.component('qsideshow', {
+	 		  props:[
+	 		  	"totalPage",
+				"currentPage",
+				"pageSize",
+	 		  ],
+			  template: `
+					<div>
+					</div>
+					<pager total-page="10" current-page="1" page-size="3"  ></pager>
+			  `,
+			  created:function(){
+			  	  
+			  },
+			  methods: {
+			     onPageClick:function(item){
+			     	if(this.totalPage>0)
+			     	{
+			     		this.changePage(item);
+			     	}
+			     }
+			  }
+			});
+			
 			var watchExampleVM = new Vue({
 				  el: '#watch-example',
 				  data:{
+
 				  }
 			});
-
-
+			
  	});
 	</script>
 </head>
@@ -114,8 +139,9 @@
 
 
 <div id="watch-example">
-  <pager total-page="10" current-page="1" page-size="3"  ></pager>
+   <qslideshow v-model=""></qslideshow>
 </div>
+
 
 </body>
 </html>
